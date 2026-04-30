@@ -12,9 +12,19 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="route('courts.index')" :active="request()->routeIs('courts.*')">
+                        コート一覧
                     </x-nav-link>
+                    @auth
+                        <x-nav-link :href="route('mypage')" :active="request()->routeIs('mypage')">
+                            マイページ
+                        </x-nav-link>
+                        @if (Auth::user()->is_admin)
+                            <x-nav-link :href="route('admin.reservations.index')" :active="request()->routeIs('admin.reservations.*')">
+                                管理者：予約一覧
+                            </x-nav-link>
+                        @endif
+                    @endauth
                 </div>
             </div>
 
