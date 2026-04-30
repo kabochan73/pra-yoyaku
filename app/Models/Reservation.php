@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reservation extends Model
 {
-    protected $fillable = ['user_id', 'court_id', 'start_at', 'end_at', 'status'];
+    protected $fillable = ['user_id', 'court_id', 'guest_name', 'start_at', 'end_at', 'status'];
+
+    public function getNameAttribute(): string
+    {
+        return $this->guest_name ?? $this->user?->name ?? '不明';
+    }
 
     protected $casts = [
         'start_at' => 'datetime',

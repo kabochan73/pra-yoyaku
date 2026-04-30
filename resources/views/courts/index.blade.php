@@ -80,7 +80,10 @@
                                         'bg-white' => !$reserved && !$isPast,
                                     ])>
                                         @if ($reserved)
-                                            予約済
+                                            <div>予約済</div>
+                                            @if (auth()->check() && auth()->user()->is_admin)
+                                                <div class="truncate text-gray-500">{{ $reserved->name }}</div>
+                                            @endif
                                         @endif
                                     </td>
                                 @endforeach

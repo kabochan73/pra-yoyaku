@@ -31,9 +31,11 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
 });
 
-// 管理者：全予約管理（管理者のみ）
+// 管理者：全予約管理・代理登録（管理者のみ）
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
+    Route::get('/reservations/create', [AdminReservationController::class, 'create'])->name('reservations.create');
+    Route::post('/reservations', [AdminReservationController::class, 'store'])->name('reservations.store');
     Route::patch('/reservations/{reservation}/cancel', [AdminReservationController::class, 'cancel'])->name('reservations.cancel');
 });
 
