@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CourtController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// 一般ユーザー：コート一覧・詳細（ログイン不要）
+Route::get('/courts', [CourtController::class, 'index'])->name('courts.index');
+Route::get('/courts/{court}', [CourtController::class, 'show'])->name('courts.show');
+
+// 管理者：コート登録・削除（ログイン必須）
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/courts/create', [CourtController::class, 'create'])->name('courts.create');
+    Route::post('/courts', [CourtController::class, 'store'])->name('courts.store');
+    Route::delete('/courts/{court}', [CourtController::class, 'destroy'])->name('courts.destroy');
 });
 
 require __DIR__.'/auth.php';
