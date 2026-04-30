@@ -12,8 +12,8 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('courts.index')" :active="request()->routeIs('courts.*')">
-                        コート一覧
+                    <x-nav-link :href="route('courts.show', \App\Models\Court::first())" :active="request()->routeIs('courts.show')">
+                        予約状況
                     </x-nav-link>
                     @auth
                         <x-nav-link :href="route('mypage')" :active="request()->routeIs('mypage')">

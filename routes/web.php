@@ -7,7 +7,8 @@ use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('courts.index');
+    $court = \App\Models\Court::first();
+    return redirect()->route('courts.show', $court);
 });
 
 Route::get('/dashboard', function () {
@@ -32,11 +33,8 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
 });
 
-// 管理者：コート登録・削除・全予約管理（管理者のみ）
+// 管理者：全予約管理（管理者のみ）
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/courts/create', [CourtController::class, 'create'])->name('courts.create');
-    Route::post('/courts', [CourtController::class, 'store'])->name('courts.store');
-    Route::delete('/courts/{court}', [CourtController::class, 'destroy'])->name('courts.destroy');
     Route::get('/reservations', [AdminReservationController::class, 'index'])->name('reservations.index');
     Route::patch('/reservations/{reservation}/cancel', [AdminReservationController::class, 'cancel'])->name('reservations.cancel');
 });
