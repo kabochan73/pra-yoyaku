@@ -15,10 +15,26 @@
                     @csrf
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700">開始日時</label>
-                        <input type="datetime-local" name="start_at" value="{{ old('start_at') }}"
+                        <label class="block text-sm font-medium text-gray-700">日付</label>
+                        <input type="date" name="date" value="{{ old('date', date('Y-m-d')) }}"
+                               min="{{ date('Y-m-d') }}"
                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200">
-                        @error('start_at')
+                        @error('date')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">開始時間</label>
+                        <select name="start_hour"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-200">
+                            @for ($h = 9; $h <= 20; $h++)
+                                <option value="{{ $h }}" {{ old('start_hour') == $h ? 'selected' : '' }}>
+                                    {{ sprintf('%02d', $h) }}:00
+                                </option>
+                            @endfor
+                        </select>
+                        @error('start_hour')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
@@ -31,6 +47,7 @@
                             <option value="2" {{ old('duration') == 2 ? 'selected' : '' }}>2時間</option>
                             <option value="3" {{ old('duration') == 3 ? 'selected' : '' }}>3時間</option>
                         </select>
+                        <p class="text-xs text-gray-500 mt-1">※ 営業時間 09:00〜21:00（終了時間が21:00を超える場合は選択できません）</p>
                         @error('duration')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                         @enderror

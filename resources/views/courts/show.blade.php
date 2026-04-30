@@ -67,8 +67,12 @@
                                         );
                                         $isPast = $slotEnd->isPast();
                                     @endphp
-                                    <td class="border border-gray-200 text-center text-xs py-2
-                                        {{ $reserved ? 'bg-red-100 text-red-700' : ($isPast ? 'bg-gray-50 text-gray-300' : 'bg-white') }}">
+                                    <td @class([
+                                        'border border-gray-200 text-center text-xs py-2',
+                                        'bg-red-100 text-red-700' => $reserved,
+                                        'bg-gray-50 text-gray-300' => $isPast && !$reserved,
+                                        'bg-white' => !$reserved && !$isPast,
+                                    ])>
                                         @if ($reserved)
                                             予約済
                                         @endif

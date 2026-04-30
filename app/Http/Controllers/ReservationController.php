@@ -17,12 +17,21 @@ class ReservationController extends Controller
     public function store(Request $request, Court $court)
     {
         $request->validate([
-            'start_at' => 'required|date|after:now',
-            'duration' => 'required|integer|min:1|max:3',
+            'date'       => 'required|date|after_or_equal:today',
+            'start_hour' => 'required|integer|min:9|max:20',
+            'duration'   => 'required|integer|min:1|max:3',
         ]);
 
-        $start = Carbon::parse($request->start_at);
+        $start = Carbon::parse($request->date)->setHour((int) $request->start_hour)->setMinute(0)->setSecond(0);
         $end = $start->copy()->addHours((int) $request->duration);
+
+        if ($end->hour > 21 || ($end->hour === 21 && $end->minute > 0)) {
+            return back()->withErrors(['duration' => '終了時間が21:00を超えるため予約できません。'])->withInput();
+        }
+
+        if ($start->isPast()) {
+            return back()->withErrors(['date' => '過去の時間は予約できません。'])->withInput();
+        }
 
         // 予約ルール：同じコートで時間が重複していないか確認
         $conflict = Reservation::where('court_id', $court->id)
