@@ -46,7 +46,7 @@ class ReservationController extends Controller
             })->exists();
 
         if ($conflict) {
-            return back()->withErrors(['start_at' => 'その時間帯はすでに予約が入っています。'])->withInput();
+            return back()->withErrors(['conflict' => 'その時間帯はすでに予約が入っています。'])->withInput();
         }
 
         Reservation::create([

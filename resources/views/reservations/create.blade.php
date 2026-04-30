@@ -11,6 +11,12 @@
                 <p class="text-gray-600 mb-1">{{ $court->description }}</p>
                 <p class="font-semibold mb-6">¥{{ number_format($court->price_per_hour) }} / 時間</p>
 
+                @error('conflict')
+                    <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
+                        {{ $message }}
+                    </div>
+                @enderror
+
                 <form action="{{ route('reservations.store', $court) }}" method="POST">
                     @csrf
 
