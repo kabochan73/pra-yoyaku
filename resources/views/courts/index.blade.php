@@ -5,7 +5,13 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    {{-- コート画像（横幅いっぱい） --}}
+    <div class="w-full overflow-hidden shadow-sm mb-6">
+        <img src="{{ asset('images/court.jpg') }}" alt="{{ $court->name }}"
+             class="w-full h-72 object-cover">
+    </div>
+
+    <div class="py-6">
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
 
             @if (session('success'))
