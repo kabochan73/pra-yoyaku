@@ -22,7 +22,7 @@ class ReservationController extends Controller
         ]);
 
         $start = Carbon::parse($request->start_at);
-        $end = $start->copy()->addHours($request->duration);
+        $end = $start->copy()->addHours((int) $request->duration);
 
         // 予約ルール：同じコートで時間が重複していないか確認
         $conflict = Reservation::where('court_id', $court->id)
