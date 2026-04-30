@@ -7,8 +7,7 @@ use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $court = \App\Models\Court::first();
-    return redirect()->route('courts.show', $court);
+    return redirect()->route('courts.index');
 });
 
 Route::get('/dashboard', function () {
@@ -21,9 +20,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// 一般ユーザー：コート一覧・詳細（ログイン不要）
+// コートページ（ログイン不要）
 Route::get('/courts', [CourtController::class, 'index'])->name('courts.index');
-Route::get('/courts/{court}', [CourtController::class, 'show'])->name('courts.show');
 
 // 一般ユーザー：予約（ログイン必須）
 Route::middleware(['auth'])->group(function () {

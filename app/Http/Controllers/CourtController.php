@@ -8,10 +8,24 @@ use Illuminate\Support\Carbon;
 
 class CourtController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $courts = Court::all();
-        return view('courts.index', compact('courts'));
+        $court = Court::first();
+
+        $startOfWeek = Carbon::parse(
+            $request->query('week', Carbon::today()->startOfWeek(Carbon::MONDAY)->format('Y-m-d'))
+        )->startOfWeek(Carbon::MONDAY);
+
+        $endOfWeek = $startOfWeek->copy()->endOfWeek(Carbon::SUNDAY);
+
+        $reservations = $court->reservations()
+            ->where('status', 'confirmed')
+            ->where('start_at', '<', $endOfWeek)
+            ->where('end_at', '>', $startOfWeek)
+            ->orderBy('start_at')
+            ->get();
+
+        return view('courts.index', compact('court', 'reservations', 'startOfWeek'));
     }
 
     public function create()

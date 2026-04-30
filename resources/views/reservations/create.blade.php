@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="flex justify-end gap-2">
-                        <a href="{{ route('courts.show', $court) }}"
+                        <a href="{{ route('courts.index') }}"
                            class="px-4 py-2 bg-gray-100 text-gray-800 rounded hover:bg-gray-200">
                             キャンセル
                         </a>
